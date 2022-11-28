@@ -8,6 +8,8 @@ import {
 import Index from "./routes/Index";
 import Navbar from "./components/Navbar";
 
+import "./index.css";
+
 const root = createRouteConfig();
 const indexRoute = root.createRoute({
 	path: "/",

@@ -1,3 +1,3 @@
 export default function Index() {
-	return <p>Home</p>;
+	return <p className="underline">Hello World</p>;
 }
