@@ -5,16 +5,12 @@ import {
 	Outlet,
 } from "@tanstack/react-router";
 
-import Index from "./routes/Index";
 import Navbar from "./components/Navbar";
+import { indexRoute } from "./routes";
 
 import "./index.css";
 
 const root = createRouteConfig();
-const indexRoute = root.createRoute({
-	path: "/",
-	component: Index,
-});
 
 const routeConfig = root.addChildren([indexRoute]);
 const router = createReactRouter({ routeConfig });
