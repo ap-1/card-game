@@ -15,8 +15,10 @@ import { WebSocketServer } from "ws";
 import { EventEmitter } from "events";
 import { z } from "zod";
 
+// Create a global event emitter
 const emitter = new EventEmitter();
 
+// Build tRPC allowing both HTTP and WebSocket connections
 export const createContext = (
 	opts: CreateHTTPContextOptions | CreateWSSContextFnOptions
 ) => ({});
@@ -34,6 +36,7 @@ const router = tRPC.router({
 		.query(({ input }) => `Hello, ${input.name}!`),
 });
 
+// Export router type signature
 export type AppRouter = typeof router;
 
 const port = 3001;
@@ -53,13 +56,16 @@ const server = createServer((req, res) => {
 		return res.end();
 	}
 
+	// Pass the req/res to the tRPC handler
 	trpcHandler(req, res);
 }).listen(port);
 
 // Create the WebSocket Server
 const wss = new WebSocketServer({ server });
 const handler = applyWSSHandler({ wss, router, createContext });
+console.log(`Listening on ws://localhost:${port}`);
 
+// Listen for connections joining and leaving
 wss.on("connection", (ws) => {
 	console.log(`Connection added (${wss.clients.size})`);
 	ws.once("close", () =>
@@ -67,7 +73,7 @@ wss.on("connection", (ws) => {
 	);
 });
 
-console.log(`Listening on ws://localhost:${port}`);
+// Handle when the WebSocket connection ends
 process.on("SIGTERM", () => {
 	console.log("SIGTERM");
 	handler.broadcastReconnectNotification();
